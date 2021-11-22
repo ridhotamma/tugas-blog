@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <header class="p-4 my-4 d-flex flex-column justify-content-center align-items-center text-center" style="height: 200px; background-color: rgb(221, 217, 217);">
+        <h1 class="title">Stamps Indonesia Blog</h1>
+        <p>read our latest blog about programming and technologies</p>
+    </header>
+
+    <div class="row mb-4">
+    {% for post in posts %}
+        <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1637497392084-8a028de000d1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=938&q=80" alt="" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">{{ post.title }}</h3>
+                    <div class="dropdown-divider"></div>
+                    <div class="card-text">{{ post.intro }}</div>
+                </div>
+                <a class="btn btn-primary" href="{% url 'post_detail' post.category.slug post.slug %}">
+                    see details >>>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

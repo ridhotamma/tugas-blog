@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4" style="margin-left: auto; margin-right: auto; width: 100%;">
+        {% if post.image %}
+          <img src="{{ post.image.url }}" alt="image post" style="background-position: center; background-size: cover; background-repeat: no-repeat; width: 100%; height: 400px; object-fit: cover;">
+       {% endif %}
+        <p>posted {{ post.created_at|timesince }} ago</p>
+
+        <h1>{{ post.title }}</h1>
+        <p><small> Category : {{ post.category }}</small></p>
+
+        <p><strong>{{ post.intro }}</strong></p>
+        <p> {{ post.body }}</p>
+    </div>
+{% endblock %}
