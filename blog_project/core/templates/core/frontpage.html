@@ -7,12 +7,39 @@
     </header>
 
     <div class="row mb-4">
-    {% for post in posts %}
-        <div class="col-sm-12 col-md-6 col-lg-4">
+        <h3 style="text-transform: uppercase;">recommended posts</h3>
+        <hr>
+        {% for post in recommended_posts %}
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <img src="{{ post.image.url }}" alt="blog image" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <p>{{ post.created_at|timesince }}</p>
+                        <h3 class="card-title">{{ post.title }}</h3>
+                        <p>category: {{ post.category.title }}</p>
+                        <div class="dropdown-divider"></div>
+                        <div class="card-text">{{ post.intro }}</div>
+                    </div>
+                    <a class="btn btn-primary" href="{% url 'post_detail' post.category.slug post.slug %}">
+                        see details >>>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+
+    <div class="row mb-4">
+    <h3 style="text-transform: uppercase;">other posts</h3>
+    <hr>
+    {% for post in default_posts %}
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1637497392084-8a028de000d1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=938&q=80" alt="" class="card-img-top">
+                <img src="{{ post.image.url }}" alt="blog image" class="card-img-top" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
+                    <p>{{ post.created_at|timesince }}</p>
                     <h3 class="card-title">{{ post.title }}</h3>
+                    <p>category: {{ post.category.title }}</p>
                     <div class="dropdown-divider"></div>
                     <div class="card-text">{{ post.intro }}</div>
                 </div>

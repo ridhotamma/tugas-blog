@@ -23,6 +23,14 @@ class Post(models.Model):
         (DRAFT, 'Draft')
     )
 
+    RECOMMENDED = 'Recommended'
+    DEFAULT = 'default'
+
+    CHOICES_PRIORITY = (
+        (RECOMMENDED, 'Recommended'),
+        (DEFAULT, 'Default')
+    )
+
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     slug = models.SlugField()
@@ -31,6 +39,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=CHOICES_STATUS, default=ACTIVE)
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    priority = models.CharField(choices=CHOICES_PRIORITY, max_length=28, default=DEFAULT)
 
     class Meta:
         ordering = ('-created_at',)

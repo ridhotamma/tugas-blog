@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ category.title }} | {% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2>category in: {{ category.title }}</h2>
+    <div class="row">
+    {% for post in posts %}
+    <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1637497392084-8a028de000d1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=938&q=80" alt="" class="card-img-top">
+            <div class="card-body">
+                <h3 class="card-title">{{ post.title }}</h3>
+                <div class="dropdown-divider"></div>
+                <div class="card-text">{{ post.created_at|timesince }}</div>
+            </div>
+            <a class="btn btn-primary" href="{% url 'post_detail' post.category.slug post.slug %}">
+                see details >>>
+            </a>
+        </div>
+    </div>
+
+    {% empty %}
+
+    <div class="d-flex justify-content-center align-items-center">
+        <h3>No post in this category</h3>
+    </div>
+
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

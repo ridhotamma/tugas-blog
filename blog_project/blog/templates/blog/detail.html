@@ -16,4 +16,28 @@
         <p><strong>{{ post.intro }}</strong></p>
         <p> {{ post.body }}</p>
     </div>
+
+    <h2 class="subtitle is-4">Comments</h2>
+
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+
+        <div class="form-control">
+        {{ form.as_p }}
+        </div>
+        <div class="form">
+            <div class="form-control">
+                <button class="btn btn-success">Submit comment</button>
+            </div>
+        </div>
+    </form>
+
+    {% for comment in post.comments.all %}
+        <article class="media box">
+            <div class="media-content">
+                <strong>{{ comment.name }}</strong> <small>{{ comment.created_at|timesince }} ago</small><br>
+                {{ comment.body }}
+            </div>
+        </article>
+    {% endfor %}
 {% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+{% block title %} create post {% endblock %}
+
+
+{% block content %}
+   
+<form method="post" class="mb-6" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-control">
+        {{ form.as_p }}
+    </div>
+            <button class="btn btn-primary" type="submit">Submit post</button>
+    </div>
+</form>
+
+<script>
+
+    const forms = document.querySelectorAll('.form-control')
+    forms.forEach(form => console.log(form))
+
+</script>
+
+{% endblock %}
+
