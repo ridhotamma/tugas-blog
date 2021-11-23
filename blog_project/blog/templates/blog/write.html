@@ -1,25 +1,18 @@
 {% extends 'core/base.html' %}
 {% block title %} create post {% endblock %}
 
-
 {% block content %}
-   
-<form method="post" class="mb-6" enctype="multipart/form-data">
+{% load widget_tweaks %}
+
+<form method="post" class="my-4" enctype="multipart/form-data">
     {% csrf_token %}
+        {% for field in form %}
+            {{ field.label }}
+            {{ field|add_class:'form-control my-2'}}
+        {% endfor %}
 
-    <div class="form-control">
-        {{ form.as_p }}
-    </div>
-            <button class="btn btn-primary" type="submit">Submit post</button>
-    </div>
+        <button class="btn btn-primary my-4" type="submit">Submit post</button>
 </form>
-
-<script>
-
-    const forms = document.querySelectorAll('.form-control')
-    forms.forEach(form => console.log(form))
-
-</script>
 
 {% endblock %}
 

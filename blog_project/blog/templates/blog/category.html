@@ -14,6 +14,8 @@
                 <h3 class="card-title">{{ post.title }}</h3>
                 <div class="dropdown-divider"></div>
                 <div class="card-text">{{ post.created_at|timesince }}</div>
+                <div class="card-text">{{ post.intro }}</div>
+
             </div>
             <a class="btn btn-primary" href="{% url 'post_detail' post.category.slug post.slug %}">
                 see details >>>

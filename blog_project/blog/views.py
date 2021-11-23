@@ -46,7 +46,7 @@ def category(request, slug):
     return render(request, 'blog/category.html', {'category': category, 'posts': posts})
 
 def search(request):
-    query = request.GET.get('query', '')
+    query = request.GET.get('q', '')
 
     posts = Post.objects.filter(status=Post.ACTIVE).filter(Q(title__icontains=query) | Q(intro__icontains=query) | Q(body__icontains=query))
 

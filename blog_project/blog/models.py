@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.query_utils import select_related_descend
+from django.db.models.signals import pre_save
+from .utils import unique_slug_generator
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
@@ -33,7 +36,7 @@ class Post(models.Model):
 
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=180, null=True, blank=True)
     intro = models.TextField()
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -59,3 +62,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.name
+
+def slug_generator(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(slug_generator, sender=Post)
