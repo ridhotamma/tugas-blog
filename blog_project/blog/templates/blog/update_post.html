@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block title %} create post {% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+<h3 class="my-4">Update '{{ post.title}}' post</h3>
+<hr>
+
+<form method="post" class="my-4" enctype="multipart/form-data">
+    {% csrf_token %}
+        {% for field in form %}
+            {{ field.label }}
+            {{ field|add_class:'form-control my-2'}}
+        {% endfor %}
+
+        <button class="btn btn-primary my-4" type="submit">Edit post</button>
+</form>
+
+{% endblock %}
+

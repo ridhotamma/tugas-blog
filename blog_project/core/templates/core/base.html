@@ -1,5 +1,4 @@
 {% load static %}
-{% load widget_tweaks %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +11,17 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>tugas blog - stamps indonesia</title>
 </head>
+
+<style>
+    body {
+        background-color: #e5e5f7;
+        opacity: 1;
+        background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #e5e5f7 10px ), repeating-linear-gradient( #444cf755, #444cf7 );
+        background-size: contain;
+        background-position: center;
+    }
+</style>
+
 <body>
     {% include 'core/navbar.html' %}
     <div class="container">

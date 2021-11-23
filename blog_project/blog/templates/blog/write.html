@@ -4,6 +4,9 @@
 {% block content %}
 {% load widget_tweaks %}
 
+<h3 class="my-4">Create New Blog</h3>
+<hr>
+
 <form method="post" class="my-4" enctype="multipart/form-data">
     {% csrf_token %}
         {% for field in form %}

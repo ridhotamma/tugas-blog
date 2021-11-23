@@ -1,9 +1,9 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-    <header class="p-4 my-4 d-flex flex-column justify-content-center align-items-center text-center" style="height: 200px; background-color: rgb(221, 217, 217);">
-        <h1 class="title">Stamps Indonesia Blog</h1>
-        <p>read our latest blog about programming and technologies</p>
+    <header class="p-4 my-4 d-flex flex-column justify-content-center align-items-center text-center bg-secondary text-white" style="height: 200px;">
+            <h1 class="title">Stamps Indonesia Blog</h1>
+            <p>read our latest blog about programming and technologies</p>
     </header>
 
     <div class="row mb-4">
@@ -12,7 +12,9 @@
         {% for post in recommended_posts %}
             <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
                 <div class="card">
+                    {% if post.image %}
                     <img src="{{ post.image.url }}" alt="blog image" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    {% endif %}
                     <div class="card-body">
                         <p>{{ post.created_at|timesince }}</p>
                         <h3 class="card-title">{{ post.title }}</h3>

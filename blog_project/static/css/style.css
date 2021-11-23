@@ -66,3 +66,8 @@ a {
     padding: 0px 5px;
     flex: 1;
 }
+
+.text-wrapper {
+    padding: 20px !important;
+    background-color: white !important;
+}

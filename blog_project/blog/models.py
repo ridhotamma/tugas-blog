@@ -1,11 +1,22 @@
 from django.db import models
-from django.db.models.query_utils import select_related_descend
 from django.db.models.signals import pre_save
+from django.contrib.auth.models import AbstractUser
 from .utils import unique_slug_generator
+
+# class User(AbstractUser):
+#     name = models.CharField(max_length=200, null=True)
+#     email = models.EmailField(unique=True, null=True)
+#     bio = models.TextField(null=True)
+
+#     avatar = models.ImageField(null=True, default="avatar.png")
+
+#     USERNAME_FIELD = 'email'
+#     REQUIRED_FIELDS = []
+
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=180, null=True, blank=True)
 
     class Meta:
         ordering = ('title',)
@@ -33,7 +44,7 @@ class Post(models.Model):
         (RECOMMENDED, 'Recommended'),
         (DEFAULT, 'Default')
     )
-
+    # writer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=180, null=True, blank=True)
@@ -41,7 +52,7 @@ class Post(models.Model):
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=CHOICES_STATUS, default=ACTIVE)
-    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True, default="https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg")
     priority = models.CharField(choices=CHOICES_PRIORITY, max_length=28, default=DEFAULT)
 
     class Meta:
@@ -67,4 +78,5 @@ def slug_generator(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
+pre_save.connect(slug_generator, sender=Category)
 pre_save.connect(slug_generator, sender=Post)

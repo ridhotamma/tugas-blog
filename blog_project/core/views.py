@@ -12,10 +12,11 @@ def frontpage(request):
 def aboutpage(request):
     return render(request, 'core/about.html')
 
-def categoryList(request):
-    categories = Category.objects.all()
+def category_list(request):
     posts = Post.objects.all()
-    return render(request, 'core/category_list.html', {'categories': categories, 'posts': posts})
+    categories = Category.objects.all()
+    
+    return render(request, 'core/category_list.html', {'posts': posts, 'categories': categories})
 
 def robots_txt(request):
     text = [

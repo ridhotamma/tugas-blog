@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container mt-4">
         <h3>Categories List</h3>
-        <p>total post available : {{ posts.count }}</p>
+        <p>total category : {{ categories.count }}</p>
         <hr>
         {% for category in categories %}
             <a href="{% url 'category_detail' category.slug %}" style="color: black">
