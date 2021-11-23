@@ -1,18 +1,18 @@
 from django.db import models
 from django.db.models.signals import pre_save
-from django.contrib.auth.models import AbstractUser
 from .utils import unique_slug_generator
+from django.contrib.auth.models import User
 
-# class User(AbstractUser):
-#     name = models.CharField(max_length=200, null=True)
-#     email = models.EmailField(unique=True, null=True)
-#     bio = models.TextField(null=True)
+class Writer(models.Model):
+	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+	name = models.CharField(max_length=200, null=True)
+	phone = models.CharField(max_length=200, null=True)
+	email = models.CharField(max_length=200, null=True)
+	profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+	date_created = models.DateTimeField(auto_now_add=True, null=True)
 
-#     avatar = models.ImageField(null=True, default="avatar.png")
-
-#     USERNAME_FIELD = 'email'
-#     REQUIRED_FIELDS = []
-
+	def __str__(self):
+		return self.name
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
@@ -44,7 +44,7 @@ class Post(models.Model):
         (RECOMMENDED, 'Recommended'),
         (DEFAULT, 'Default')
     )
-    # writer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    writer = models.ForeignKey(Writer, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=180, null=True, blank=True)

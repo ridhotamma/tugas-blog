@@ -40,6 +40,27 @@
                     <a href="{% url 'create-category' %}" class="btn btn-danger" style="width: 40% !important; margin: 0 auto;" >create new category</a>
                 </div>
             </div>
+
+            <div class="card p-4 mb-4">
+                <div class="card-body flex-column d-flex justify-content-center align-items-center">
+                    <h3>total Writer: </h3>
+                    <h1>{{ writer.count }}</h1>
+                    <table class="table table-striped">
+                        <tr>
+                            <th>name</th>
+                            <th>joined at</th>
+                            <th>last login</th>
+                        </tr>
+                    {% for w in writer %}
+                        <tr>
+                            <td>{{ w.username }}</td>
+                            <td>{{ w.date_joined }}</td>
+                            <td>{{ w.last_login }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                </div>
+            </div>
         </div>
     </div>
   

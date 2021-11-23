@@ -1,41 +1,60 @@
-from django.db.models.fields import files
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
-from .forms import CategoryForm, CommentForm, PostForm, Category
-from .models import Post, Category
+from django.contrib.auth.models import Group, User
+
+from .forms import CategoryForm, CommentForm, PostForm, Category, CreateUserForm
+from .decorators import unauthenticated_user, allowed_users, admin_only
+from .models import Post, Category, Writer
 
 # Create your views here.
 
-# untuk login user
+@unauthenticated_user
+def registerPage(request):
+
+	form = CreateUserForm()
+	if request.method == 'POST':
+		form = CreateUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			username = form.cleaned_data.get('username')
+
+
+			messages.success(request, 'Account was created for ' + username)
+
+			return redirect('login')
+		
+
+	context = {'form':form}
+	return render(request, 'blog/register.html', context)
+
+@unauthenticated_user
 def loginPage(request):
-    page = 'login'
-    if request.user.is_authenticated:
-        return redirect('frontpage')
 
-    if request.method == 'POST':
-        email = request.POST.get('email').lower()
-        password = request.POST.get('password')
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password =request.POST.get('password')
 
-        try:
-            user = User.objects.get(email=email)
-        except:
-            messages.error(request, 'User does not exist')
+		user = authenticate(request, username=username, password=password)
 
-        user = authenticate(request, email=email, password=password)
+		if user is not None:
+			login(request, user)
+			return redirect('manage')
+		else:
+			messages.info(request, 'Username OR password is incorrect')
 
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request, 'Username OR password does not exit')
+	context = {}
+	return render(request, 'blog/login.html', context)
 
-    context = {'page': page}
-    return render(request, 'base/login_register.html', context)
+def logoutUser(request):
+	logout(request)
+	return redirect('frontpage')
 
 def detail(request, category_slug, slug):
     post = get_object_or_404(Post, slug=slug, status=Post.ACTIVE)
@@ -54,6 +73,8 @@ def detail(request, category_slug, slug):
 
     return render(request, 'blog/detail.html', {'post': post, 'form': form})
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['writer'])
 def write(request):
 
     if request.method == 'POST':
@@ -70,6 +91,8 @@ def write(request):
 
     return render(request, 'blog/write.html', {'form': form })
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['writer'])
 def updatePost(request, pk):
     post = Post.objects.get(id=pk)
     form = PostForm(instance=post)
@@ -85,6 +108,8 @@ def updatePost(request, pk):
 
     return render(request, 'blog/update_post.html', {'form': form, 'post': post})
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['writer'])
 def deletePost(request, pk):
     post = Post.objects.get(id=pk)
     if request.method == 'POST':
@@ -93,13 +118,17 @@ def deletePost(request, pk):
 
     return render(request, 'blog/delete_post.html', {'post': post})
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['writer'])
 def manage(request):
     posts = Post.objects.all()
     categories = Category.objects.all()
+    writer = User.objects.all()
 
     context = {
         'posts': posts,
-        'categories': categories
+        'categories': categories,
+        'writer': writer
     }
 
     return render(request, 'blog/manage.html', context=context)
@@ -111,6 +140,8 @@ def category(request, slug):
     return render(request, 'blog/category.html', {'category': category, 'posts': posts})
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['writer'])
 def create_category(request):
     categories = Category.objects.all()
 

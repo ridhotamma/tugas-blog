@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Post, Category, Comment
+from .models import Post, Category, Comment, Writer
 
 class CommentItemInline(admin.TabularInline):
     model = Comment
@@ -22,4 +22,4 @@ class CommentAdmin(admin.ModelAdmin):
 admin.site.register(Post, PostAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Comment, CommentAdmin)
-# admin.site.register(User)
+admin.site.register(Writer)
